@@ -182,7 +182,3 @@ kubectl apply -f ingress_route.yaml
 
 ## Ref
 [Azure Monitor – Install AKS Monitoring Grafana Dashboard With Azure AD Integration Using Helm](https://www.stefanroth.net/2019/10/18/azure-monitor-helm-install-aks-monitoring-grafana-dashboard-with-azure-ad-integration/)
-
-grafana admin pwd:
-JVIX5aEhONbGx3ysYeRpumDyTT8lHEOHfQWIcZTN
-
