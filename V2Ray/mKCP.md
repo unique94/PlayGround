@@ -1,7 +1,7 @@
 # V2Ray with mKCP
 
 ## Create VMs
-<img src="./images/create_VM.png" width="450"/>
+![title](./images/create_VM.png)
 
 ## Install V2Ray
 - Download script
