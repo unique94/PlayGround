@@ -81,7 +81,7 @@
 
     In this case, we use port `29544` as the V2Ray inbound port. We need the add the rule in VM firewall.
 
-    <img src="./images/V2Ray_Install_4.PNG" width="450"/>
+    <img src="./images/V2Ray_Install_4.PNG"/>
 
 ## Install V2Ray Client
 
@@ -89,7 +89,7 @@
 
     Clients can be found [here](https://github.com/v2ray/v2ray-core/releases). Unzip the file and you can get the below files.
 
-    <img src="./images/V2Ray_Install_5.PNG"/>
+    <img src="./images/V2Ray_Install_5.PNG" width="600"/>
 
 - Update Client Config.
 
