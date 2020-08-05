@@ -1,21 +1,22 @@
 # V2Ray with mKCP
 
 ## Create VMs
-![title](./images/create_VM.png)
+
+<img src="./images/create_VM.PNG" width="450"/>
 
 ## Install V2Ray
 - Download script
 
     ```wget https://install.direct/go.sh```
 
-    <img src="./images/V2Ray_Install_1.png"/>
+    <img src="./images/V2Ray_Install_1.PNG"/>
 
 
 - Install V2Ray
 
     ```sudo bash go.sh```
 
-    <img src="./images/V2Ray_Install_2.png"/>
+    <img src="./images/V2Ray_Install_2.PNG"/>
 
 ## Config V2Ray Server
 - Update the V2Ray config in `/etc/v2ray/config.json`
@@ -74,13 +75,13 @@
 
 - Disable auto-shutdown
 
-    <img src="./images/V2Ray_Install_3.png" width="450"/>
+    <img src="./images/V2Ray_Install_3.PNG" width="450"/>
 
 - Add Inbound port rules
 
     In this case, we use port `29544` as the V2Ray inbound port. We need the add the rule in VM firewall.
 
-    <img src="./images/V2Ray_Install_4.png" width="450"/>
+    <img src="./images/V2Ray_Install_4.PNG" width="450"/>
 
 ## Install V2Ray Client
 
@@ -88,7 +89,7 @@
 
     Clients can be found [here](https://github.com/v2ray/v2ray-core/releases). Unzip the file and you can get the below files.
 
-    <img src="./images/V2Ray_Install_5.png"/>
+    <img src="./images/V2Ray_Install_5.PNG"/>
 
 - Update Client Config.
 
