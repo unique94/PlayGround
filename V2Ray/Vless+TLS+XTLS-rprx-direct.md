@@ -24,6 +24,9 @@ curl https://get.acme.sh | sh
 
 source ~/.bashrc
 
+# Register account first
+.acme.sh/acme.sh --register-account -m my@example.com
+
 # must enable 80/443 inbound ports
 .acme.sh/acme.sh --issue -d 域名 --standalone -k ec-256
 
@@ -141,10 +144,10 @@ vim /etc/ssl/private/xray-cert-renew.sh
 # Add content below.
 ---------------------------------------------
 #!/bin/bash
-.acme.sh/acme.sh --install-cert -d a-us.wyyao.fun --ecc --fullchain-file /etc/ssl/private/us.wyyao.fun.crt --key-file /etc/ssl/private/us.wyyao.fun.key
+.acme.sh/acme.sh --install-cert -d a-<域名> --ecc --fullchain-file /etc/ssl/private/<域名>.crt --key-file /etc/ssl/private/<域名>.key
 echo "Xray Cert Renewed"
 
-chmod +r /etc/ssl/private/us.wyyao.fun.key
+chmod +r /etc/ssl/private/<域名>.key
 echo "Add Read Permission for private key"
 
 sudo systemctl restart xray
