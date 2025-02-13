@@ -3,12 +3,14 @@
 ## Requirements
 - VM
 - 域名（已绑定vm）
+    - 注意：如果使用cloudflare，需要关闭Proxy。
+    - 开启Always use https。
 
 ## Create VMs
 
 <img src="./images/create_VM.PNG" width="450"/>
 
-- Enable `80`, `443` inbound ports
+- Enable `443` inbound ports
 - Stop auto-shutdown config.  
 
 ## Login in root user.
@@ -46,7 +48,7 @@ mkdir -p /var/www/website/html
 # download template web(template.zip) from https://templated.co/
 unzip -o -d /var/www/website/html template.zip
 
-vim /etc/nginx/nginx.conf
+vim /etc/nginx/conf.d/myweb.conf
 
 # Add content below in http {}
 ----------------------------------------------------
@@ -54,7 +56,8 @@ server {
     listen 80;
     server_name 域名;
     root /var/www/website/html;
-    return 301 https://$http_host$request_uri;
+    index index.html;
+    # return 301 https://$http_host$request_uri; // 无需配置跳转，cloudflare已经配置always https
 }
 server {
     listen 127.0.0.1:8080;
@@ -75,9 +78,19 @@ vim /usr/local/etc/xray/config.json
 ----------------------------------------------------
 {
     "log": {
-        "loglevel": "debug",
+        "loglevel": "warning",
         "access": "/var/log/xray/access.log",
         "error": "/var/log/xray/error.log"
+    },
+    "routing": {
+        "domainStrategy": "IPIfNonMatch",
+        "rules": [
+            {
+                "type": "field",
+                "ip": ["geoip:cn"],
+                "outboundTag": "block"
+            }
+        ]
     },
     "inbounds": [
         {
@@ -87,40 +100,60 @@ vim /usr/local/etc/xray/config.json
                 "clients": [
                     {
                         "id": "<生成的GUID>", # cat /proc/sys/kernel/random/uuid
-                        "flow": "xtls-rprx-direct",
-                        "level": 0
+                        "flow": "xtls-rprx-vision"
                     }
                 ],
                 "decryption": "none",
                 "fallbacks": [
                     {
-                        "dest": 80
+                        "dest": 8080
                     }
                 ]
             },
             "streamSettings": {
                 "network": "tcp",
-                "security": "xtls",
-                "xtlsSettings": {
-                    "alpn": [
-                        "http/1.1"
-                    ],
+                "security": "tls",
+                "tlsSettings": {
+                    "rejectUnknownSni": true,
+                    "fingerprint": "chrome",
+                    "allowInsecure": false,
+                    "alpn": ["http/1.1", "h2"],
+                    "minVersion": "1.2",
                     "certificates": [
                         {
+                            "ocspStapling": 3600,
                             "certificateFile": "/etc/ssl/private/<域名>.crt", // 换成你的证书，绝对路径
                             "keyFile": "/etc/ssl/private/<域名>.key" // 换成你的私钥，绝对路径
                         }
                     ]
                 }
+            },
+            "sniffing": {
+                "enabled": true,
+                "destOverride": ["http", "tls"]
             }
         }
     ],
     "outbounds": [
         {
-            "protocol": "freedom"
+            "protocol": "freedom",
+            "tag": "direct"
+        },
+        {
+            "protocol": "blackhole",
+            "tag": "block"
         }
-    ]
+    ],
+    "policy": {
+        "levels": {
+            "0": {
+                "handshake": 2,
+                "connIdle": 120
+            }
+        }
+    }
 }
+
 ----------------------------------------------------
 
 ```
